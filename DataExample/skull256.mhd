@@ -1,0 +1,5 @@
+NDims = 3
+DimSize = 256 256 256
+ElementSize = 1.0 1.0 1.0
+ElementType = MET_UCHAR
+ElementDataFile = skull256.raw

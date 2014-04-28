@@ -1,0 +1,1 @@
+#optirun64 ./vtkGPUMultiVolumeRenderDemo --MHA DataExample/skull256.mhd  -CompositeShadeRamp 100 100  -NextVol -MHA DataExample/skull256.mhd  -CompositeShadeRamp 100 100  -NextVol -MHA DataExample/skull256.mhd  -CompositeShadeRamp 100 100 -FrameRate 0.01
