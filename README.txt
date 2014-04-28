@@ -1,23 +1,10 @@
+===PLEASE READ THE README.PDF====
+
 The project does a multi-volume ray casting based on the 
 Visualization Toolkit. This document gives some information 
 about the project. The project also includes a demo for testing 
 pourpose. 
 
-vtkVolumeMapper 
-
-vtkVolumeProperty 
-
-vtkGPUMultiVolumeRayCastMapper 
-
-vtkOpenGLGPUMultiVolumeRayCastMapper 
-
-vtkVolume 
-
-vtkDataSet 
-
-vtkVolumeProperty 
-
-vtkDataSe
 
 a) Main Changes in vtkGPUVolumeRayCastMapper 
 
@@ -26,12 +13,9 @@ for single volume rendering, it uses only one volume dataset
 and one volume property as its input which are connected to 
 vtkVolumeMapper and vtkVolume respectively (see fig. 1). 
 
- 
-
+[ FIGURE 1]
 Figure 1 Relations between the new mappers and other classes in the 
 proposed multi-volume ray caster 
-
- 
 
 The first change to have a multi-volume renderer is that the 
 mapper must have direct access to all volume properties and 
@@ -49,61 +33,9 @@ prototype of new methods in the class.
  
 
 Table 1 New methods for vtkGPUMultiVolumeRayCastMapper 
-
-//Define the Input for additional datasets. 
-
- 
-
-Set 
-
-void SetInput( int port, vtkDataSet *genericInput ); 
-
-void SetInput( int port, vtkImageData *input ); 
-
-Get 
-
-vtkImageData * GetInput ( int port=0 ); 
-
-//Define the properties of the additional volumes. 
-
- 
-
-Set 
-
-void SetAdditionalProperty ( int volNumber, vtkVolumeProperty 
-*property ); 
-
-Get 
-
-vtkVolumeProperty *GetAdditionalProperty( int volNumber ); 
-
-//Define user transformation for additional input user transform. 
-
- 
-
-Set 
-
-void SetAdditionalInputUserTransform( int volNumber, 
-vtkTransform *t); 
-
-Get 
-
-vtkTransform *GetAdditionalInputUserTransform( int volNumber 
-); 
-
-
-
- 
-
- 
-
- 
-
- 
+[TABLE 1]
 
 b) Main Changes in vtkOpenGLGPUVolumeRayCastMapper 
-
- 
 
 vtkOpenGLGPUVolumeRayCastMapper is the core class of 
 the ray casting method in VTK. This class is responsible for 
@@ -123,8 +55,7 @@ of vtkTransform. This array is used in RenderClipped-
 BoundingBox method and it holds transform matrices which 
 converts the texture coordinates of the first volume to all the 
 other volumes by applying the following equation for each 
-additional volume: 
-
+additional volume:  [EQUATION]
 
 As the equation indicates, three components are used to 
 create the final transformation matrix for each additional 
@@ -148,42 +79,10 @@ applied to different volumes by user request. The user can
 assign up to six planes for cropping and also allocate a single 
 clipping plane. 
 
- 
-
 Table 2 Function prototype for implemented clipping and cropping 
 methods in vtkGPUVolumeRayCastMapper 
+[TABLE 2]
 
-//Signature of clipping methods 
-
- 
-
-Clipping 
-
-void AddClippingPlane(int vol, vtkPlane *plane); 
-
-void RemoveClippingPlane(int vol); 
-
-vtkPlane* GetClippingPlane(int vol); 
-
-//Signature of cropping methods 
-
- 
-
-Cropping 
-
-void SetCroppingRegionPlanes(int vol, double xMin, double 
-xMax, double yMin, double yMax, double zMin, double 
-zMax); 
-
- 
-
-void SetCroppingRegionPlanes (int vol, double *args); 
-
-void SetCropping (int vol,int arg); 
-
-
-
-
 Similar to other parts of the code, clipping and cropping 
 functions perform initialization of the actual clipping and 
 cropping; the core part of the clipping and cropping is 
@@ -200,8 +99,6 @@ SetCroppingRegionPlanes() for cropping.
  
 
 c) Main changes in GLSL shaders 
-
- 
 
 Nowadays, programmable GPUs are used for general 
 algorithms that can be run in parallel. There are different ways 
@@ -226,48 +123,8 @@ vtkGPUVolumeRayCastMapper_-CompositeFS.)
  
 
 Table 3 List of changed GLSL shaders 
-
+[TABLE 3]
  
-
-Shader Name 
-
-Rate of 
-Changes 
-
-1 
-
-vtkGPUVolumeRayCastMapper_FourComponentsFS 
-
-Low 
-
-2 
-
-vtkGPUVolumeRayCastMapper_OneComponentFS 
-
-Low 
-
-3 
-
-vtkGPUVolumeRayCastMapper_NoShadeFS 
-
-Low 
-
-4 
-
-vtkGPUVolumeRayCastMapper_ShadeFS 
-
-Medium 
-
-5 
-
-vtkGPUVolumeRayCastMapper_CompositeFS 
-
-Medium 
-
-
-
- 
-
 If shading of volumes is desired for the ray casting, 
 vtkGPUVolumeRayCastMapper_ShadeFS performs the 
 shading of the volumes. In the modified version of this 
@@ -311,7 +168,4 @@ tested, if the ray position is not inside the clipped part of the
 volume, the ray position of the volume is sampled from the 
 first to the last volume and according to the front to back a-
 blending formula: 
-S . 
-
-
-
+[EQUATION]
